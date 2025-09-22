@@ -3,6 +3,8 @@ const app = express();
 const PORT = 3000;  
 const __dirname = import.meta.dirname;
 
+app.use(express.json()); //middleware
+
 const users = [
   {
     id: 1,
@@ -51,6 +53,20 @@ app.get("/image/users/:id", (req, res) => {
 
   res.status(404).send("User no existe");
 });
+
+  app.post("/users", (req, res) => {
+    console.log(req.body);
+    res.send("Escribimos un user");
+
+    const nvoId = user.length + 1;
+    const nvoUser = {
+      "id": nvoId,
+      "nombre" : req.body.nombre,
+      "apellido" : req.body.apellido,
+      "foto": `foto`+ nvoId + `.jpg`
+    }
+  });
+
 app.listen(PORT, () => {
   console.log(`servidor de piola en http://localhost:${PORT}`);
 });
