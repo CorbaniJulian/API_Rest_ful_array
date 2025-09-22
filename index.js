@@ -96,6 +96,10 @@ app.delete("/users", (req, res) => {
   res.status(204).send(); //204 - solicitud procesada sin contenido, nada que enviar, OK, NO CONTENT
 });
 
+app.use((req, res) => {
+  res.status(404).send("El recurso no existe");
+})
+
 app.listen(PORT, () => {
   console.log(`servidor de piola en http://localhost:${PORT}`);
 });
