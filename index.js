@@ -1,6 +1,6 @@
-import express from 'express';
+import express from "express";
 const app = express();
-const PORT = 3000;  
+const PORT = 3000;
 const __dirname = import.meta.dirname;
 
 app.use(express.json()); //middleware
@@ -54,18 +54,47 @@ app.get("/image/users/:id", (req, res) => {
   res.status(404).send("User no existe");
 });
 
-  app.post("/users", (req, res) => {
-    console.log(req.body);
-    res.send("Escribimos un user");
+app.post("/users", (req, res) => {
+  console.log(req.body);
 
-    const nvoId = user.length + 1;
-    const nvoUser = {
-      "id": nvoId,
-      "nombre" : req.body.nombre,
-      "apellido" : req.body.apellido,
-      "foto": `foto`+ nvoId + `.jpg`
-    }
-  });
+  const nvoId = users.length + 1;
+  const nvoUser = {
+    id: nvoId,
+    nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    foto: `foto` + nvoId + `.jpg`
+  }
+
+  users.push(nvoUser);
+  res.send("Nuevo user guardado");
+});
+
+app.put("/users", (req, res) => {
+  const idAct = req.query.id;
+  console.log(req.query.id);
+  console.log(req.body);
+
+  const user = users.find(u => u.id == req.query.id);
+  console.log(user);
+  if(!user) return res.status(404).send("User no existe");
+
+  user.nombre = req.body.nombre;
+  user.apellido = req.body.apellido;
+
+  res.json(user);
+});
+
+app.delete("/users", (req, res) => {
+  const idAct = req.query.id;
+  console.log(req.query.id);
+
+  const userIndex = users.findIndex(u => u.id == req.query.id);
+  if(!userIndex) return res.status(404).send("User no existe");
+
+  users.splice(userIndex, 1);
+
+  res.status(204).send(); //204 - solicitud procesada sin contenido, nada que enviar, OK, NO CONTENT
+});
 
 app.listen(PORT, () => {
   console.log(`servidor de piola en http://localhost:${PORT}`);
